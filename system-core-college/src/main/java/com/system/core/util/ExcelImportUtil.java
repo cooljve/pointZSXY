@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExcelImport {
+public class ExcelImportUtil {
 
     Workbook msExcel = null;
     private boolean isExcel2007 = false;
@@ -21,11 +21,11 @@ public class ExcelImport {
         this.isExcel2007 = isExcel2007;
     }
 
-    public ExcelImport() {
+    public ExcelImportUtil() {
         this.msExcel = new HSSFWorkbook();
     }
 
-    public ExcelImport(boolean isExcel2007) {
+    public ExcelImportUtil(boolean isExcel2007) {
         this.isExcel2007 = isExcel2007;
         if (!isExcel2007)
             this.msExcel = new HSSFWorkbook();
@@ -33,7 +33,7 @@ public class ExcelImport {
             this.msExcel = new XSSFWorkbook();
     }
 
-    public ExcelImport(InputStream in, boolean isExcel2007) {
+    public ExcelImportUtil(InputStream in, boolean isExcel2007) {
         try {
             this.isExcel2007 = isExcel2007;
             if (!isExcel2007)
@@ -46,7 +46,7 @@ public class ExcelImport {
         }
     }
 
-    public ExcelImport(InputStream in) {
+    public ExcelImportUtil(InputStream in) {
         this(in, true);
     }
 

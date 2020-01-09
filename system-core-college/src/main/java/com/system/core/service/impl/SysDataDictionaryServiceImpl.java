@@ -3,7 +3,7 @@ package com.system.core.service.impl;
 import com.system.core.dao.SysDataDictionaryDao;
 import com.system.core.entity.SysDataDictionary;
 import com.system.core.service.SysDataDictionaryService;
-import com.system.core.util.DateUtils;
+import com.system.core.util.CustomDateUtil;
 import com.system.core.util.ParamUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,14 +21,14 @@ public class SysDataDictionaryServiceImpl implements SysDataDictionaryService {
 
     @Override
     public void add(SysDataDictionary bean) {
-        bean.setCreateDate(DateUtils.getNowDateTime());
+        bean.setCreateDate(CustomDateUtil.getNowDateTime());
         bean.setIsDelete(0);
         dataDictionaryDao.save(bean);
     }
 
     @Override
     public void update(SysDataDictionary bean) {
-        bean.setModifyDate(DateUtils.getNowDateTime());
+        bean.setModifyDate(CustomDateUtil.getNowDateTime());
         bean.setIsDelete(0);
         dataDictionaryDao.save(bean);
     }

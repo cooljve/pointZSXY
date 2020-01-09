@@ -1,6 +1,6 @@
 package com.system.user.service.impl;
 
-import com.system.core.util.DateUtils;
+import com.system.core.util.CustomDateUtil;
 import com.system.core.util.DigestMD5Util;
 import com.system.core.util.ParamUtil;
 import com.system.user.dao.AccessTokenDao;
@@ -116,7 +116,7 @@ public class SysUserServiceImpl implements SysUserService {
         //账号
         sysUser.setAccount(System.currentTimeMillis() + "");
         //添加时间
-        sysUser.setCreateDate(DateUtils.getNowTime("yyyy-MM-dd HH:mm:ss"));
+        sysUser.setCreateDate(CustomDateUtil.getNowTime("yyyy-MM-dd HH:mm:ss"));
         sysUserDao.save(sysUser);
         if (null != model.getRoleId() && -1 != model.getRoleId()) {
             addUserRoles(model.getRoleId(), sysUser.getId(), false);
@@ -141,7 +141,7 @@ public class SysUserServiceImpl implements SysUserService {
         SysUser sysUser = sysUserDao.findOne(id);
         if (sysUser != null) {
             ParamUtil.bindBean(sysUser, model);
-            sysUser.setModifyDate(DateUtils.getNowTime("yyyy-MM-dd HH:mm:ss"));
+            sysUser.setModifyDate(CustomDateUtil.getNowTime("yyyy-MM-dd HH:mm:ss"));
 
             sysUserDao.save(sysUser);
             if (null != model.getRoleId() && -1 != model.getRoleId()) {
@@ -156,7 +156,7 @@ public class SysUserServiceImpl implements SysUserService {
     public void updateSysUserPhone(Integer id, String nickname, String zhiwei, String jiesao, Integer sex) {
         SysUser sysUser = sysUserDao.findOne(id);
         if (sysUser != null) {
-            sysUser.setModifyDate(DateUtils.getNowTime("yyyy-MM-dd HH:mm:ss"));
+            sysUser.setModifyDate(CustomDateUtil.getNowTime("yyyy-MM-dd HH:mm:ss"));
             //昵称
             if (null == nickname || nickname.equals("")) {
                 sysUser.setNickname(sysUser.getNickname());
@@ -187,7 +187,7 @@ public class SysUserServiceImpl implements SysUserService {
         SysUser sysUser = sysUserDao.findOne(id);
         if (sysUser != null) {
             ParamUtil.bindBean(sysUser, model);
-            sysUser.setRemark2(getNextDay(DateUtils.getNowTime("yyyy-MM-dd HH:mm:ss")).toString());
+            sysUser.setRemark2(getNextDay(CustomDateUtil.getNowTime("yyyy-MM-dd HH:mm:ss")).toString());
 
             sysUserDao.save(sysUser);
             if (null != model.getRoleId() && -1 != model.getRoleId()) {

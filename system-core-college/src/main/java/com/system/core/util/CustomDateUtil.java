@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DateUtils {
+public class CustomDateUtil {
 
     public static String getNowDate() {// 得到当前日期
         return new SimpleDateFormat(Constant.YYYY_MM_DD).format(new Date());

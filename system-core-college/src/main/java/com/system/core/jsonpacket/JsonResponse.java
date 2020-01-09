@@ -1,6 +1,6 @@
 package com.system.core.jsonpacket;
 
-import com.system.core.util.DateUtils;
+import com.system.core.util.CustomDateUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +21,7 @@ public class JsonResponse {
     // 异常信息
     private String msg = "";
 
-    private String updateTime = DateUtils.getNowDateTime();
+    private String updateTime = CustomDateUtil.getNowDateTime();
 
     public void setContent(String code, String msg) {
         this.code = code;

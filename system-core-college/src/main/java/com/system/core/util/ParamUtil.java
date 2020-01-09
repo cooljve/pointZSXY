@@ -9,6 +9,10 @@ import java.util.List;
 
 public class ParamUtil {
 
+    public static boolean isEmpty(String string) {
+        return string == null || string.trim().length() == 0;
+    }
+
     //获取参数int
     public static int getIntParameter(HttpServletRequest request, String paraName, int defaultValue) {
         int res = defaultValue;

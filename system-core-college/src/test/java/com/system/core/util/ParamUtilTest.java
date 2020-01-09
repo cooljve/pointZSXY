@@ -4,6 +4,7 @@ import com.system.user.entity.SysUser;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.util.StringUtils;
 
 import static org.junit.Assert.*;
 
@@ -14,6 +15,15 @@ public class ParamUtilTest {
     @Before
     public void setUp() {
         request = new MockHttpServletRequest();
+    }
+
+    @Test
+    public void isEmpty(){
+        boolean paramUtilRes = ParamUtil.isEmpty("  ");
+        boolean stringUtilsRes = StringUtils.isEmpty("  ");
+
+        assertTrue(paramUtilRes);
+        assertFalse(stringUtilsRes);
     }
 
     @Test

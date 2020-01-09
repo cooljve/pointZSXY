@@ -18,18 +18,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.system.core.util.Constant.XLS;
+import static com.system.core.util.Constant.XLSX;
+
 @SuppressWarnings("deprecation")
 public class XlsExportUtil {
-
-    /**
-     * Excel 2003
-     */
-    private final static String XLS = "xls";
-
-    /**
-     * Excel 2007
-     */
-    private final static String XLSX = "xlsx";
 
     // excel最大行数,必须小于65536,并且为1000整数倍
 //   private static final int MAXROW=20000;
@@ -41,7 +34,7 @@ public class XlsExportUtil {
     /**
      * 此方法描述的是：<p> Description:根据查询结果导出xls<p>
      *
-     * @param downloadfileName 生成的文件名
+     * @param downloadFileName 生成的文件名
      * @param list             查询结果数组
      * @param exportColumns    定义输出到xls的列
      * @param caption          如果有标题填值,否则置null
@@ -51,7 +44,7 @@ public class XlsExportUtil {
      * @version: 1.0
      * @createTime：2015-01-05 下午02:54:34
      */
-    public static void exportXlsByList(String downloadfileName, List<? extends Object> list,
+    public static void exportXlsByList(String downloadFileName, List<? extends Object> list,
                                        String[] exportColumns, String caption, String[] header, HttpServletResponse response) throws Exception {
 
         if (list.size() < 0) {
@@ -81,7 +74,7 @@ public class XlsExportUtil {
             rows++;
         }
         writeListData(workbook, sheet, list, exportColumns, rows, style);
-        outputWorkbook(workbook, downloadfileName, response);
+        outputWorkbook(workbook, downloadFileName, response);
 
     }
 
@@ -95,11 +88,11 @@ public class XlsExportUtil {
      * @createTime：2015-01-05 下午04:01:32
      */
     public static void outputWorkbook(HSSFWorkbook workbook,
-                                      String downloadfileName, HttpServletResponse response) throws Exception {
+                                      String downloadFileName, HttpServletResponse response) throws Exception {
         OutputStream out = null;
         String yearMothDate = new SimpleDateFormat("yyyyMMddHHmmSS").format(new Date());
         try {
-            String fileName = new String((downloadfileName + yearMothDate + ".xls").getBytes("gb2312"), "ISO-8859-1");
+            String fileName = new String((downloadFileName + yearMothDate + ".xls").getBytes("gb2312"), "ISO-8859-1");
             //HttpServletResponse response = (HttpServletResponse) context.get(ServletActionContext.HTTP_RESPONSE);;
             response.reset();
             logger.info("向response输出文件流开始！");
@@ -368,7 +361,7 @@ public class XlsExportUtil {
         Sheet sheet = workbook.getSheetAt(sheetNum);
         //解析公式结果
         FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
-        List<JSONObject> list = new ArrayList<JSONObject>();
+        List<JSONObject> list = new ArrayList<>();
         int minRowIx = sheet.getFirstRowNum() + 1;
         int maxRowIx = sheet.getLastRowNum();
         for (int rowIx = minRowIx; rowIx <= maxRowIx; rowIx++) {

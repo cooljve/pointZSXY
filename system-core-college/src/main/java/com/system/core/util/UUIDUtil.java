@@ -1,11 +1,11 @@
 package com.system.core.util;
 
-import java.util.UUID;
+import static java.util.UUID.randomUUID;
 
 /**
  * 生成唯一码
  */
-public class UUIDUtils {
+public class UUIDUtil {
 
     /**
      * 生成UUID字符串
@@ -13,7 +13,7 @@ public class UUIDUtils {
      * @return UUID字符串
      */
     public static String getUUID() {
-        return java.util.UUID.randomUUID().toString().replaceAll("-", "");
+        return randomUUID().toString().replaceAll("-", "");
     }
 
     public static String[] chars = new String[]{"a", "b", "c", "d", "e", "f",
@@ -24,13 +24,13 @@ public class UUIDUtils {
             "W", "X", "Y", "Z"};
 
     public static String generateShortUuid() {
-        StringBuffer shortBuffer = new StringBuffer();
-        String uuid = UUID.randomUUID().toString().replace("-", "");
+        StringBuilder stringBuilder = new StringBuilder();
+        String uuid = randomUUID().toString().replace("-", "");
         for (int i = 0; i < 8; i++) {
             String str = uuid.substring(i * 4, i * 4 + 4);
             int x = Integer.parseInt(str, 16);
-            shortBuffer.append(chars[x % 0x3E]);
+            stringBuilder.append(chars[x % 0x3E]);
         }
-        return shortBuffer.toString();
+        return stringBuilder.toString();
     }
 }
