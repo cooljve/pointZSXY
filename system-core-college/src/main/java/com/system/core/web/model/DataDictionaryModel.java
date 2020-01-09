@@ -1,96 +1,95 @@
 package com.system.core.web.model;
 
 
-
-
 public class DataDictionaryModel {
 
-	private Integer parentObjId;
-	
-	private String name;
-	
-	/**
+    private Integer parentObjId;
+
+    private String name;
+
+    /**
      * 数据字典代码
      */
-	private String dataCode;
-	
-	private Integer status;
-	
-	private Integer orderBy;
-	/**
-	 * 编号
-	 */
-	private String code;
-	 /**
+    private String dataCode;
+
+    private Integer status;
+
+    private Integer orderBy;
+    /**
+     * 编号
+     */
+    private String code;
+    /**
      * 深度
      */
     private Integer depth;
     /**
-	 * 0:正常  1：特殊
-	 */
-	private Integer property;
-	
+     * 0:正常  1：特殊
+     */
+    private Integer property;
 
-	public Integer getParentObjId() {
-		return parentObjId;
-	}
 
-	public void setParentObjId(Integer parentObjId) {
-		this.parentObjId = parentObjId;
-	}
+    public Integer getParentObjId() {
+        return parentObjId;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setParentObjId(Integer parentObjId) {
+        this.parentObjId = parentObjId;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getDataCode() {
-		return dataCode;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setDataCode(String dataCode) {
-		this.dataCode = dataCode;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Integer getStatus() {
-		return status;
-	}
+    public String getDataCode() {
+        return dataCode;
+    }
 
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
+    public void setDataCode(String dataCode) {
+        this.dataCode = dataCode;
+    }
 
-	public Integer getOrderBy() {
-		return orderBy;
-	}
+    public Integer getStatus() {
+        return status;
+    }
 
-	public void setOrderBy(Integer orderBy) {
-		this.orderBy = orderBy;
-	}
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
-	public Integer getDepth() {
-		return depth;
-	}
+    public Integer getOrderBy() {
+        return orderBy;
+    }
 
-	public void setDepth(Integer depth) {
-		this.depth = depth;
-	}
+    public void setOrderBy(Integer orderBy) {
+        this.orderBy = orderBy;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public Integer getDepth() {
+        return depth;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public void setDepth(Integer depth) {
+        this.depth = depth;
+    }
 
-	public Integer getProperty() {
-		return property;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public void setProperty(Integer property) {
-		this.property = property;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Integer getProperty() {
+        return property;
+    }
+
+    public void setProperty(Integer property) {
+        this.property = property;
+    }
 }
