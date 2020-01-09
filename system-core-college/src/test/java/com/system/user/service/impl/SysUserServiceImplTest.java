@@ -24,7 +24,7 @@ public class SysUserServiceImplTest {
     private AccessTokenDao accessTokenDao;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         sysUserDao = mock(SysUserDao.class);
         sysUserRoleDao = mock(SysUserRoleDao.class);
         sysRoleDao = mock(SysRoleDao.class);
@@ -36,7 +36,7 @@ public class SysUserServiceImplTest {
     }
 
     @Test
-    public void getSysUserById(){
+    public void getSysUserById() {
         SysUser sysUser = new SysUser();
         sysUser.setEmail("123456@123.com");
         when(sysUserDao.findOne(56)).thenReturn(sysUser);

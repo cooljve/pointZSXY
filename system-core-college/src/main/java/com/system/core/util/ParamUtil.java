@@ -3,60 +3,46 @@ package com.system.core.util;
 import org.apache.commons.beanutils.BeanUtilsBean;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ParamUtil {
 
     //获取参数int
-    public static int getIntParameter(HttpServletRequest request, String paraName, int defaul) {
-        int res = defaul;
+    public static int getIntParameter(HttpServletRequest request, String paraName, int defaultValue) {
+        int res = defaultValue;
         try {
-            String para = request.getParameter(paraName);
-            if (para == null) {
-                res = defaul;
-            } else {
-                res = Integer.parseInt(para);
-            }
+            String parameter = request.getParameter(paraName);
+            res = parameter == null ? defaultValue : Integer.parseInt(parameter);
         } catch (Exception e) {
-            res = defaul;
+            e.printStackTrace();
         }
         return res;
     }
 
     //获取参数String
-    public static String getStrParameter(HttpServletRequest request, String paraName, String defaul) {
-        String res = defaul;
-        try {
+    public static String getStrParameter(HttpServletRequest request, String paraName, String defaultValue) {
+        String res = defaultValue;
+        if (request.getParameter(paraName) != null) {
             res = request.getParameter(paraName);
-            if (res == null) {
-                res = defaul;
-            }
-        } catch (Exception e) {
-            res = defaul;
         }
         return res;
     }
 
     // 参数拷贝
-    public static void bindBean(Object entity, Object model) {
+    public static void bindBean(Object dest, Object source) {
         try {
-            BeanUtilsBean.getInstance().copyProperties(entity, model);
+            BeanUtilsBean.getInstance().copyProperties(dest, source);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    /**
-     * string数组转Integer数组
-     *
-     * @param strs
-     * @return
-     */
-    public static Integer[] toIntegers(String[] strs) {
-        Integer[] ides = new Integer[strs.length];
-        for (int i = 0; i < strs.length; i++) {
-            ides[i] = Integer.parseInt(strs[i]);
-        }
-        return ides;
+    public static Integer[] toIntegers(String[] strings) {
+        List<Integer> list = new ArrayList<>();
+        Arrays.stream(strings).map(Integer::parseInt).forEach(list::add);
+        return list.toArray(new Integer[0]);
     }
 
 
