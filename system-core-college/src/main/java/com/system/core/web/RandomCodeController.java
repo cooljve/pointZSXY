@@ -25,9 +25,9 @@ public class RandomCodeController extends BaseController {
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0L);
 
-        int width = ParamUtil.getIntParamter(request, "width", 60);
-        int height = ParamUtil.getIntParamter(request, "height", 20);
-        int fontSize = ParamUtil.getIntParamter(request, "fontSize", 18);
+        int width = ParamUtil.getIntParameter(request, "width", 60);
+        int height = ParamUtil.getIntParameter(request, "height", 20);
+        int fontSize = ParamUtil.getIntParameter(request, "fontSize", 18);
 
         BufferedImage image = new BufferedImage(width, height, 1);
         Graphics g = image.getGraphics();
@@ -46,7 +46,7 @@ public class RandomCodeController extends BaseController {
             g.drawLine(x, y, x + xl, y + yl);
         }
 
-        String sRand = ParamUtil.getStrParamter(request, "sRand", "");
+        String sRand = ParamUtil.getStrParameter(request, "sRand", "");
         if ("".equals(sRand)) {
             for (int i = 0; i < 4; i++) {
                 sRand = sRand + random.nextInt(10);

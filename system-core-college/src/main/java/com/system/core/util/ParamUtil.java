@@ -5,17 +5,9 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 import javax.servlet.http.HttpServletRequest;
 
 public class ParamUtil {
-    //验证是否为空
-    public static boolean isEmpty(String str) {
-        if (str == null || str.trim().length() == 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     //获取参数int
-    public static int getIntParamter(HttpServletRequest request, String paraName, int defaul) {
+    public static int getIntParameter(HttpServletRequest request, String paraName, int defaul) {
         int res = defaul;
         try {
             String para = request.getParameter(paraName);
@@ -31,7 +23,7 @@ public class ParamUtil {
     }
 
     //获取参数String
-    public static String getStrParamter(HttpServletRequest request, String paraName, String defaul) {
+    public static String getStrParameter(HttpServletRequest request, String paraName, String defaul) {
         String res = defaul;
         try {
             res = request.getParameter(paraName);

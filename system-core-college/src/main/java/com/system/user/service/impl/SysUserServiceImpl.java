@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class SysUserServiceImpl implements SysUserService {
                 namePredicate = cb.and(cb.equal(root.<Integer>get("isdelete"), 0));
                 andPredicates.add(namePredicate);
 
-                if (!ParamUtil.isEmpty(model.getUsername())) {
+                if (!StringUtils.isEmpty(model.getUsername())) {
                     namePredicate = cb.and(cb.like(root.<String>get("username"), "%" + model.getUsername() + "%"));
                     andPredicates.add(namePredicate);
                 }
@@ -70,7 +71,7 @@ public class SysUserServiceImpl implements SysUserService {
 //					namePredicate = cb.and(cb.like(root.<String>get("truename"),"%"+model.getTruename()+"%"));
 //					andPredicates.add(namePredicate);
 //				}
-                if (!ParamUtil.isEmpty(model.getCode())) {
+                if (!StringUtils.isEmpty(model.getCode())) {
                     namePredicate = cb.and(cb.like(root.<String>get("code"), "%" + model.getCode() + "%"));
                     andPredicates.add(namePredicate);
                 }
@@ -92,7 +93,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public SysUser getSysUserByid(Integer id) {
+    public SysUser getSysUserById(Integer id) {
         SysUser sysUser = sysUserDao.findOne(id);
         return sysUser;
     }
@@ -124,7 +125,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Transactional
-    private void addUserRoles(Integer roleId, Integer userid, boolean flag) {
+    void addUserRoles(Integer roleId, Integer userid, boolean flag) {
         if (flag) {
             sysUserRoleDao.delByUserId(userid);
         }
@@ -210,14 +211,14 @@ public class SysUserServiceImpl implements SysUserService {
         for (Integer integer : ides) {
             sysUserRoleDao.delByUserId(integer);//删除用户角色中间表
         }
-        sysUserDao.delSysUser(ides);
+        sysUserDao.deleteSysUser(ides);
     }
 
     @Override
     @Transactional
     public void upSysUserStatus(Integer status, String ids) {
         Integer[] ides = ParamUtil.toIntegers(ids.split(","));
-        sysUserDao.upSysUserStatus(status, ides);
+        sysUserDao.updateSysUserStatus(status, ides);
     }
 
     @Override
@@ -225,7 +226,7 @@ public class SysUserServiceImpl implements SysUserService {
     public void upSysUserPass(String password, String ids) {
         Integer[] ides = ParamUtil.toIntegers(ids.split(","));
         password = DigestMD5Util.MD5(password);
-        sysUserDao.upSysUserPass(password, ides);
+        sysUserDao.updateSysUserPass(password, ides);
     }
 
     @Override

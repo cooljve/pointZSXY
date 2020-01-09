@@ -14,9 +14,9 @@ public class DigestMD5Util {
                 byteArray[i] = (byte) charArray[i];
             }
             byte[] md5Bytes = md5.digest(byteArray);
-            StringBuffer hexValue = new StringBuffer();
-            for (int i = 0; i < md5Bytes.length; i++) {
-                int val = ((int) md5Bytes[i]) & 0xff;
+            StringBuilder hexValue = new StringBuilder();
+            for (byte md5Byte : md5Bytes) {
+                int val = ((int) md5Byte) & 0xff;
                 if (val < 16)
                     hexValue.append("0");
                 hexValue.append(Integer.toHexString(val));
@@ -29,20 +29,12 @@ public class DigestMD5Util {
     }
 
     // 可逆的加密算法
-    public static String EncryMd5(String inStr) {
-        char[] a = inStr.toCharArray();
-        for (int i = 0; i < a.length; i++) {
-            a[i] = (char) (a[i] ^ 't');
+    public static String encryptMd5(String inStr) {
+        char[] chars = inStr.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            chars[i] = (char) (chars[i] ^ 't');
         }
-        String s = new String(a);
-        return s;
+        return new String(chars);
     }
-
-    // 测试主函数
-    public static void main(String args[]) {
-        System.out.println("admin MD5后：" + MD5("123456"));
-        System.out.println("admin MD5后在加密：" + EncryMd5("E10ADC3949BA59ABBE56E057F20F883E"));
-    }
-
 
 }

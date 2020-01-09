@@ -18,7 +18,7 @@ public class SysUserManager {
             if (null == userId) {
                 return null;
             }
-            SysUser sysUser = sysUserService.getSysUserByid(userId);
+            SysUser sysUser = sysUserService.getSysUserById(userId);
             return sysUser;
         } else {
             Cookie jsessionId = getSessionCookie(request);

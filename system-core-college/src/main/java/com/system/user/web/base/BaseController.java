@@ -16,10 +16,10 @@ import java.util.List;
 public class BaseController {
 
     public Pageable getPageable(HttpServletRequest request) {
-        int number = ParamUtil.getIntParamter(request, "number", 0);
-        int size = ParamUtil.getIntParamter(request, "size", 10);
-        String sortField = ParamUtil.getStrParamter(request, "sortField", "");
-        String sortOrder = ParamUtil.getStrParamter(request, "sortOrder", "desc");
+        int number = ParamUtil.getIntParameter(request, "number", 0);
+        int size = ParamUtil.getIntParameter(request, "size", 10);
+        String sortField = ParamUtil.getStrParameter(request, "sortField", "");
+        String sortOrder = ParamUtil.getStrParameter(request, "sortOrder", "desc");
         Sort sort = null;
         if (!"".equals(sortField)) {
             String[] sortFields = sortField.split(",");

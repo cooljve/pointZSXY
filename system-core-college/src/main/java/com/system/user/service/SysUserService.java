@@ -19,7 +19,7 @@ public interface SysUserService {
      * @param id
      * @return
      */
-    public SysUser getSysUserByid(Integer id);
+    public SysUser getSysUserById(Integer id);
 
     /**
      * 根据用户名查询

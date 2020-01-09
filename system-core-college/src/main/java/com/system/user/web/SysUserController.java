@@ -57,7 +57,7 @@ public class SysUserController extends BaseController {
      */
     @RequestMapping(value = "/getSysUser/{id}", method = {RequestMethod.GET})
     public SysUser getSysUser(@PathVariable Integer id) {
-        return sysUserService.getSysUserByid(id);
+        return sysUserService.getSysUserById(id);
     }
 
     /**

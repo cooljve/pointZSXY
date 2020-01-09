@@ -70,7 +70,7 @@ public class LoginServiceImpl implements LoginService {
             flag = 1;//原始密码错误
             mess = "原始密码错误!";
         } else {
-            sysUserDao.upSysUserPass(DigestMD5Util.MD5(newPass), new Integer[]{sysUser.getId()});
+            sysUserDao.updateSysUserPass(DigestMD5Util.MD5(newPass), new Integer[]{sysUser.getId()});
             sysUser.setPassword(DigestMD5Util.MD5(newPass));
             session.setAttribute("sys_users", sysUser);
             mess = "修改成功!";

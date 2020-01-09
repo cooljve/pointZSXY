@@ -82,7 +82,7 @@ public class LoginController extends BaseController {
     @RequestMapping(value = "/listLoginMenu", method = {RequestMethod.GET, RequestMethod.POST})
     public List<SysMenu> updateMyPass(HttpServletRequest request) {
         Integer userId = (Integer) request.getSession().getAttribute("USER_ID");
-        SysUser sysUser = sysUserService.getSysUserByid(userId);
+        SysUser sysUser = sysUserService.getSysUserById(userId);
         List<SysMenu> list = loginService.listLoginMenu(sysUser.getId());
         List<SysMenu> beans = new ArrayList<SysMenu>();
         if (1 == sysUser.getRoleId()) {
@@ -138,7 +138,7 @@ public class LoginController extends BaseController {
     @RequestMapping(value = "/getLoginUser", method = RequestMethod.GET)
     public SysUser getLoginUser(HttpServletRequest request) {
         Integer userId = (Integer) request.getSession().getAttribute("USER_ID");
-        SysUser sysUser = sysUserService.getSysUserByid(userId);
+        SysUser sysUser = sysUserService.getSysUserById(userId);
         return sysUser;
     }
 }

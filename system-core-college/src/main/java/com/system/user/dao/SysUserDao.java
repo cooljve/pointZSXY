@@ -9,15 +9,15 @@ import org.springframework.data.repository.CrudRepository;
 public interface SysUserDao extends CrudRepository<SysUser, Integer>, JpaSpecificationExecutor<SysUser> {
     @Modifying
     @Query("update SysUser set getDelete=1 where id in ?1")
-    public void delSysUser(Integer[] ids);
+    public void deleteSysUser(Integer[] ids);
 
     @Modifying
     @Query("update SysUser set status=?1 where id in ?2")
-    public void upSysUserStatus(Integer status, Integer[] ids);
+    public void updateSysUserStatus(Integer status, Integer[] ids);
 
     @Modifying
     @Query("update SysUser set password=?1 where id in ?2")
-    public void upSysUserPass(String password, Integer[] ides);
+    public void updateSysUserPass(String password, Integer[] ides);
 
     @Query("from SysUser where username=?1 and getDelete=0 ")
     public SysUser findSysUserByUsername(String username);

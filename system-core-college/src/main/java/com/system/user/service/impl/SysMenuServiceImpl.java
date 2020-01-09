@@ -6,9 +6,11 @@ import com.system.user.dao.SysRoleMenuDao;
 import com.system.user.entity.SysMenu;
 import com.system.user.service.SysMenuService;
 import com.system.user.web.model.SysMenuModel;
+import org.apache.poi.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -55,7 +57,7 @@ public class SysMenuServiceImpl implements SysMenuService {
     @Override
     @Transactional
     public void delSysMenu(String ids) {
-        if (!ParamUtil.isEmpty(ids)) {
+        if (!StringUtils.isEmpty(ids)) {
             Integer[] ides = ParamUtil.toIntegers(ids.split(","));
             for (Integer integer : ides) {
                 List<SysMenu> listSysMenu = sysMenuDao.findByParentId(integer);//查出所有的子结构

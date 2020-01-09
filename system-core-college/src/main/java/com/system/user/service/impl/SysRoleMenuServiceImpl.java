@@ -7,6 +7,7 @@ import com.system.user.service.SysRoleMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class SysRoleMenuServiceImpl implements SysRoleMenuService {
     @Override
     public void insertSysRoleMenu(Integer roleId, String menusId) {
         sysRoleMenuDao.delByRoleId(roleId);//删除
-        if (!ParamUtil.isEmpty(menusId)) {
+        if (!StringUtils.isEmpty(menusId)) {
             Integer[] mensId = ParamUtil.toIntegers(menusId.split(","));//转换为int数组
             SysRoleMenu bean = null;
             for (Integer integer : mensId) {
