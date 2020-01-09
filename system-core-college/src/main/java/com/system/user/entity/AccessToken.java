@@ -1,5 +1,7 @@
 package com.system.user.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -10,15 +12,15 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-
+@Data
 @Entity
 @Table(name="t_access_token")
 public class AccessToken implements Serializable{
     /**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
 	@SequenceGenerator(name="APP_ACCESS_TOKEN_SEQ")
@@ -44,7 +46,7 @@ public class AccessToken implements Serializable{
     **/
 	@Column(name="ACCESS_TIME")
 	private Long accessTime ;
-	
+
 	public Integer getId() {
 		return id;
 	}
