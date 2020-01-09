@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+import static com.system.core.util.Constant.*;
+import static com.system.core.util.Constant.USER_NOT_EXIST;
+
 @Service
 public class LoginServiceImpl implements LoginService {
 
@@ -30,26 +33,26 @@ public class LoginServiceImpl implements LoginService {
         int flag = 0;
         String mess = "";
         HttpSession session = request.getSession();
-        String code = null == session.getAttribute("randomCode") ? "" : session.getAttribute("randomCode").toString();
-        session.removeAttribute("randomCode");//清除session
+        String code = null == session.getAttribute(SESSION_ATTR_RANDOM_CODE) ? EMPTY_STR : session.getAttribute("randomCode").toString();
+        session.removeAttribute(SESSION_ATTR_RANDOM_CODE);//清除session
         if (!code.equals(randomCode)) {
             flag = 1;//验证码错误
-            mess = "验证码错误";
+            mess = RANDOM_CODE_ERROR;
         } else {
             SysUser sysUser = sysUserDao.findSysUserByUsername(username);
             if (sysUser == null) {
-                flag = 2;//用户不存在
-                mess = "用户不存在";
+                flag = 2;
+                mess = USER_NOT_EXIST;
             } else {
                 if (!DigestMD5Util.MD5(password).equals(sysUser.getPassword())) {
-                    flag = 3;//密码错误
-                    mess = "密码错误";
+                    flag = 3;
+                    mess = PWD_ERROR;
                 } else if (sysUser.getStatus() == 1) {
-                    flag = 4;//密码错误
-                    mess = "用户已禁用";
+                    flag = 4;
+                    mess = USER_IS_DISABLED;
                 } else {
-                    session.setAttribute("USER_ID", sysUser.getId());
-                    mess = "验证成功";
+                    session.setAttribute(SESSION_ATTR_USER_ID, sysUser.getId());
+                    mess = VERIFY_SUCCESS;
                 }
             }
         }
@@ -60,20 +63,20 @@ public class LoginServiceImpl implements LoginService {
      * 用户修改自己的密码
      */
     @Transactional
-    public String updateMyPass(String oldPass, String newPass, HttpServletRequest request) {
+    public String updateUserPassword(String oldPwd, String newPwd, HttpServletRequest request) {
         int flag = 0;
         String mess = "";
         HttpSession session = request.getSession();
-        Integer userId = (Integer) request.getSession().getAttribute("USER_ID");
+        Integer userId = (Integer) request.getSession().getAttribute(SESSION_ATTR_USER_ID);
         SysUser sysUser = sysUserDao.findOne(userId);
-        if (!DigestMD5Util.MD5(oldPass).equals(sysUser.getPassword())) {
+        if (!DigestMD5Util.MD5(oldPwd).equals(sysUser.getPassword())) {
             flag = 1;//原始密码错误
-            mess = "原始密码错误!";
+            mess = OLD_PWD_ERROR;
         } else {
-            sysUserDao.updateSysUserPass(DigestMD5Util.MD5(newPass), new Integer[]{sysUser.getId()});
-            sysUser.setPassword(DigestMD5Util.MD5(newPass));
-            session.setAttribute("sys_users", sysUser);
-            mess = "修改成功!";
+            sysUserDao.updateSysUserPass(DigestMD5Util.MD5(newPwd), new Integer[]{sysUser.getId()});
+            sysUser.setPassword(DigestMD5Util.MD5(newPwd));
+            session.setAttribute("sys_user", sysUser);
+            mess = UPDATE_SUCCESS;
         }
         return "{\"message\":\"" + mess + "\",\"flag\":\"" + flag + "\"}";
     }
@@ -82,7 +85,7 @@ public class LoginServiceImpl implements LoginService {
      * 查询当前登录人的菜单
      */
     public List<SysMenu> listLoginMenu(Integer userId) {
-        String hql = "from SysMenu where id in (select  sysMenuId from SysRoleMenu where sysRoleId in (select roleid from SysUserRole where userid=?1 ))";
+        String hql = "from SysMenu where id in (select  sysMenuId from SysRoleMenu where sysRoleId in (select roleId from SysUserRole where userId=?1 ))";
         hql += " order by orderBy asc";
         return baseRepository.find(hql, new Object[]{userId}, -1, -1);
     }

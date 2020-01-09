@@ -70,7 +70,7 @@ public class LoginController extends BaseController {
     @RequestMapping(value = "/updateMyPass", method = {RequestMethod.GET, RequestMethod.POST})
     public String updateMyPass(@RequestParam("oldPass") String oldPass, @RequestParam("newPass") String newPass,
                                HttpServletRequest request) {
-        return loginService.updateMyPass(oldPass, newPass, request);
+        return loginService.updateUserPassword(oldPass, newPass, request);
     }
 
     /**

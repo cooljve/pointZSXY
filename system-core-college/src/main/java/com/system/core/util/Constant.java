@@ -12,4 +12,14 @@ public class Constant {
     public static final String NUM_LETTER_SEQ = "1234567890abcdefghijkmnpqrstuvwxyz";
     public static final String XLS = "xls";
     public static final String XLSX = "xlsx";
+    public static final String ENCRYPTED_PWD_123456 = "E10ADC3949BA59ABBE56E057F20F883E";
+    public static final String USER_NOT_EXIST = "用户不存在";
+    public static final String PWD_ERROR = "密码错误";
+    public static final String USER_IS_DISABLED = "用户已禁用";
+    public static final String VERIFY_SUCCESS = "验证成功";
+    public static final String OLD_PWD_ERROR = "原始密码错误!";
+    public static final String UPDATE_SUCCESS = "修改成功!";
+    public static final String RANDOM_CODE_ERROR = "验证码错误";
+    public static final String SESSION_ATTR_RANDOM_CODE = "randomCode";
+    public static final String SESSION_ATTR_USER_ID = "USER_ID";
 }

@@ -23,7 +23,7 @@ public interface LoginService {
      * @param request
      * @return
      */
-    public String updateMyPass(String oldPass, String newPass, HttpServletRequest request);
+    public String updateUserPassword(String oldPass, String newPass, HttpServletRequest request);
 
     /**
      * 查询当前登录人的菜单
