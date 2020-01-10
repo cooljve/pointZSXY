@@ -1,16 +1,17 @@
 package com.system.user.service.impl;
 
 import com.system.core.dao.base.BaseRepository;
+import com.system.core.util.Constant;
 import com.system.core.util.DigestMD5Util;
 import com.system.user.dao.SysUserDao;
 import com.system.user.entity.SysMenu;
 import com.system.user.entity.SysUser;
 import com.system.user.service.LoginService;
+import com.system.user.vo.MessageVO;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.util.ObjectUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -45,9 +46,10 @@ public class LoginServiceImplTest {
         SysUser user = expectUser();
         when(sysUserDao.findSysUserByUsername("JoiLiu")).thenReturn(user);
 
-        String result = loginService.login("JoiLiu", "123456", "123456", request);
+        MessageVO result = loginService.login("JoiLiu", "123456", "123456", request);
 
-        assertEquals("{\"message\":\"验证成功\",\"flag\":\"0\"}", result);
+        assertEquals(Constant.VERIFY_SUCCESS, result.getMessage());
+        assertEquals(0, result.getFlag());
         assertEquals(1, session.getAttribute("USER_ID"));
     }
 
@@ -58,9 +60,10 @@ public class LoginServiceImplTest {
         SysUser user = expectUser();
         when(sysUserDao.findSysUserByUsername("JoiLiu")).thenReturn(user);
 
-        String result = loginService.login("JoiLiu", "123456", "123", request);
+        MessageVO result = loginService.login("JoiLiu", "123456", "123", request);
 
-        assertEquals("{\"message\":\"验证码错误\",\"flag\":\"1\"}", result);
+        assertEquals(Constant.RANDOM_CODE_ERROR, result.getMessage());
+        assertEquals(1, result.getFlag());
         assertNull(session.getAttribute("USER_ID"));
     }
 
@@ -71,9 +74,10 @@ public class LoginServiceImplTest {
         SysUser user = expectUser();
         when(sysUserDao.findSysUserByUsername("Joi")).thenReturn(user);
 
-        String result = loginService.login("JoiLiu", "123456", "123456", request);
+        MessageVO result = loginService.login("JoiLiu", "123456", "123456", request);
 
-        assertEquals("{\"message\":\"用户不存在\",\"flag\":\"2\"}", result);
+        assertEquals(Constant.USER_NOT_EXIST, result.getMessage());
+        assertEquals(2, result.getFlag());
         assertNull(session.getAttribute("USER_ID"));
     }
 
@@ -85,9 +89,10 @@ public class LoginServiceImplTest {
         user.setStatus(1);
         when(sysUserDao.findSysUserByUsername("JoiLiu")).thenReturn(user);
 
-        String result = loginService.login("JoiLiu", "654321", "123456", request);
+        MessageVO result = loginService.login("JoiLiu", "654321", "123456", request);
 
-        assertEquals("{\"message\":\"密码错误\",\"flag\":\"3\"}", result);
+        assertEquals(Constant.PWD_ERROR, result.getMessage());
+        assertEquals(3, result.getFlag());
         assertNull(session.getAttribute("USER_ID"));
     }
 
@@ -99,9 +104,10 @@ public class LoginServiceImplTest {
         user.setStatus(1);
         when(sysUserDao.findSysUserByUsername("JoiLiu")).thenReturn(user);
 
-        String result = loginService.login("JoiLiu", "123456", "123456", request);
+        MessageVO result = loginService.login("JoiLiu", "123456", "123456", request);
 
-        assertEquals("{\"message\":\"用户已禁用\",\"flag\":\"4\"}", result);
+        assertEquals(Constant.USER_IS_DISABLED, result.getMessage());
+        assertEquals(4, result.getFlag());
         assertNull(session.getAttribute("USER_ID"));
     }
 
@@ -112,9 +118,10 @@ public class LoginServiceImplTest {
         SysUser user = expectUser();
         when(sysUserDao.findOne(1)).thenReturn(user);
 
-        String result = loginService.updateUserPassword("1234561", "654321", request);
+        MessageVO result = loginService.updateUserPassword("1234561", "654321", request);
 
-        assertEquals("{\"message\":\"原始密码错误!\",\"flag\":\"1\"}", result);
+        assertEquals(Constant.OLD_PWD_ERROR, result.getMessage());
+        assertEquals(1, result.getFlag());
     }
 
     @Test
@@ -124,10 +131,11 @@ public class LoginServiceImplTest {
         SysUser user = expectUser();
         when(sysUserDao.findOne(1)).thenReturn(user);
 
-        String result = loginService.updateUserPassword("123456", "654321", request);
+        MessageVO result = loginService.updateUserPassword("123456", "654321", request);
         SysUser newUser = (SysUser) session.getAttribute("sys_user");
 
-        assertEquals("{\"message\":\"修改成功!\",\"flag\":\"0\"}", result);
+        assertEquals(Constant.UPDATE_SUCCESS, result.getMessage());
+        assertEquals(0, result.getFlag());
         assertNotNull(newUser);
         assertEquals(DigestMD5Util.MD5("654321"), newUser.getPassword());
     }
@@ -138,7 +146,7 @@ public class LoginServiceImplTest {
 
         List<SysMenu> sysMenus = loginService.listLoginMenu(1);
 
-        assertEquals(2,sysMenus.size());
+        assertEquals(2, sysMenus.size());
     }
 
     private SysUser expectUser() {

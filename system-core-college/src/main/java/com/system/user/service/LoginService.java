@@ -1,29 +1,34 @@
 package com.system.user.service;
 
 import com.system.user.entity.SysMenu;
+import com.system.user.vo.MessageVO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
 public interface LoginService {
+
     /**
      * 用户登录
      *
-     * @param id
+     * @param username
+     * @param inputPwd
+     * @param randomCode
+     * @param request
      * @return
      */
-    public String login(String username, String password, String randomCode, HttpServletRequest request);
+    public MessageVO login(String username, String inputPwd, String randomCode, HttpServletRequest request);
 
     /**
      * 用户修改自己的密码
      *
-     * @param oldPass
+     * @param inputPwd
      * @param newPass
      * @param request
      * @return
      */
-    public String updateUserPassword(String oldPass, String newPass, HttpServletRequest request);
+    public MessageVO updateUserPassword(String inputPwd, String newPass, HttpServletRequest request);
 
     /**
      * 查询当前登录人的菜单

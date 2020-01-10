@@ -17,6 +17,6 @@ public class UUIDUtilTest {
     public void generateShortUuid() {
         String shortUuid = UUIDUtil.generateShortUuid();
 
-        assertEquals(8,shortUuid.length());
+        assertEquals(8, shortUuid.length());
     }
 }

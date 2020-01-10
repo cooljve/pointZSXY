@@ -4,8 +4,11 @@ import com.system.user.entity.SysMenu;
 import com.system.user.entity.SysUser;
 import com.system.user.service.LoginService;
 import com.system.user.service.SysUserService;
+import com.system.user.vo.MessageVO;
 import com.system.user.web.base.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,11 +39,12 @@ public class LoginController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/userLogin", method = {RequestMethod.GET, RequestMethod.POST})
-    public String userLogin(@RequestParam() String username,
-                            @RequestParam() String password,
-                            @RequestParam() String randomCode,
-                            HttpServletRequest request) {
-        return loginService.login(username, password, randomCode, request);
+    public ResponseEntity userLogin(@RequestParam String username,
+                                    @RequestParam String password,
+                                    @RequestParam String randomCode,
+                                    HttpServletRequest request) {
+        MessageVO messageVO = loginService.login(username, password, randomCode, request);
+        return new ResponseEntity<>(messageVO, HttpStatus.OK);
     }
 
     /**
@@ -68,9 +72,10 @@ public class LoginController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/updateMyPass", method = {RequestMethod.GET, RequestMethod.POST})
-    public String updateMyPass(@RequestParam("oldPass") String oldPass, @RequestParam("newPass") String newPass,
-                               HttpServletRequest request) {
-        return loginService.updateUserPassword(oldPass, newPass, request);
+    public ResponseEntity updateMyPass(@RequestParam("oldPass") String oldPass, @RequestParam("newPass") String newPass,
+                                       HttpServletRequest request) {
+        MessageVO messageVO = loginService.updateUserPassword(oldPass, newPass, request);
+        return new ResponseEntity<>(messageVO, HttpStatus.OK);
     }
 
     /**

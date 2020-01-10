@@ -28,7 +28,6 @@ public class DigestMD5Util {
         }
     }
 
-    // 可逆的加密算法
     public static String encryptMd5(String inStr) {
         char[] chars = inStr.toCharArray();
         for (int i = 0; i < chars.length; i++) {
@@ -37,4 +36,7 @@ public class DigestMD5Util {
         return new String(chars);
     }
 
+    public static boolean isPwdCorrect(String unencryptedPwd, String encryptedPwd) {
+        return DigestMD5Util.MD5(unencryptedPwd).equals(encryptedPwd);
+    }
 }

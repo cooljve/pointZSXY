@@ -18,7 +18,7 @@ public class ParamUtilTest {
     }
 
     @Test
-    public void isEmpty(){
+    public void isEmpty() {
         boolean paramUtilRes = ParamUtil.isEmpty("  ");
         boolean stringUtilsRes = StringUtils.isEmpty("  ");
 

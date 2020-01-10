@@ -10,7 +10,7 @@ public class RandomCodeUtilTest {
     public void getOrderCode() {
         String orderCode = RandomCodeUtil.getOrderCode();
         System.out.println(orderCode);
-        assertEquals(19,orderCode.length());
+        assertEquals(19, orderCode.length());
     }
 
     @Test
@@ -25,8 +25,8 @@ public class RandomCodeUtilTest {
         System.out.println(random3);
         System.out.println(random4);
 
-        assertNotEquals(random1,random2);
-        assertNotEquals(random3,random4);
+        assertNotEquals(random1, random2);
+        assertNotEquals(random3, random4);
     }
 
     @Test
