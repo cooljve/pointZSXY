@@ -1,5 +1,6 @@
 package com.system.user.web;
 
+import com.system.core.util.Constant;
 import com.system.user.entity.SysMenu;
 import com.system.user.entity.SysUser;
 import com.system.user.service.LoginService;
@@ -54,20 +55,20 @@ public class LoginController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/login_out", method = {RequestMethod.GET})
-    public String login_out(HttpServletRequest request) {
+    public ResponseEntity signOut(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.removeAttribute("USER_ID");
         session.removeAttribute("orgList");
         session.invalidate();
-        return super.message("ok", "注销成功!", "1");
+        return new ResponseEntity<>(new MessageVO(Constant.SIGN_OUT_SUCCESS, 1), HttpStatus.OK);
     }
+
 
     /**
      * 用户修改密码
      *
-     * @param username
-     * @param password
-     * @param randomCode
+     * @param oldPass
+     * @param newPass
      * @param request
      * @return
      */
@@ -85,11 +86,11 @@ public class LoginController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/listLoginMenu", method = {RequestMethod.GET, RequestMethod.POST})
-    public List<SysMenu> updateMyPass(HttpServletRequest request) {
+    public List<SysMenu> listLoginMenu(HttpServletRequest request) {
         Integer userId = (Integer) request.getSession().getAttribute("USER_ID");
         SysUser sysUser = sysUserService.getSysUserById(userId);
         List<SysMenu> list = loginService.listLoginMenu(sysUser.getId());
-        List<SysMenu> beans = new ArrayList<SysMenu>();
+        List<SysMenu> beans = new ArrayList<>();
         if (1 == sysUser.getRoleId()) {
             String code = sysUser.getCode();
             for (SysMenu sysMenu : list) {
@@ -141,9 +142,9 @@ public class LoginController extends BaseController {
 
 
     @RequestMapping(value = "/getLoginUser", method = RequestMethod.GET)
-    public SysUser getLoginUser(HttpServletRequest request) {
+    public ResponseEntity getLoginUser(HttpServletRequest request) {
         Integer userId = (Integer) request.getSession().getAttribute("USER_ID");
         SysUser sysUser = sysUserService.getSysUserById(userId);
-        return sysUser;
+        return new ResponseEntity<>(sysUser,HttpStatus.OK);
     }
 }

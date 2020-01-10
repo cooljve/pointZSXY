@@ -22,4 +22,6 @@ public class Constant {
     public static final String RANDOM_CODE_ERROR = "验证码错误";
     public static final String SESSION_ATTR_RANDOM_CODE = "randomCode";
     public static final String SESSION_ATTR_USER_ID = "USER_ID";
+    public static final String SIGN_OUT_SUCCESS = "注销成功!";
+    public static final String COMMA = ",";
 }

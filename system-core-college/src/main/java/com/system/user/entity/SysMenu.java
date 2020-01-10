@@ -30,7 +30,7 @@ public class SysMenu implements Serializable {
     private String name;
 
     @Column(name = "ENAME", length = 200)
-    private String ename;
+    private String eName;
 
     @Column(name = "DESCRIPTION", length = 200)
     private String description;
@@ -46,10 +46,10 @@ public class SysMenu implements Serializable {
 
     @JoinColumn(name = "PARENT_ID")
     @ManyToOne(fetch = FetchType.EAGER)
-    private SysMenu parentObj;
+    private SysMenu parentMenu;
 
     @Column(name = "PARENT_ID")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentObj", cascade = {javax.persistence.CascadeType.ALL})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentMenu", cascade = {javax.persistence.CascadeType.ALL})
     @OrderBy("ORDER_BY")
     @JsonIgnore
     private Set<SysMenu> childSet;

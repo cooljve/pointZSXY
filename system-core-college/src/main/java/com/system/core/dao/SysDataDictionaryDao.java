@@ -15,29 +15,29 @@ import java.util.List;
 @Repository
 public interface SysDataDictionaryDao extends CrudRepository<SysDataDictionary, Integer>, JpaSpecificationExecutor<SysDataDictionary> {
     @Modifying
-    @Query("update SysDataDictionary set getDelete=1 where id=?1")
-    public void delDataDictionary(Integer id);
+    @Query("update SysDataDictionary set isDelete=1 where id=?1")
+    void delDataDictionary(Integer id);
 
-    @Query(" from SysDataDictionary d where d.parentObj.id is null and d.getDelete=0 and d.status=1 order by d.orderBy ")
-    public List<SysDataDictionary> findParentDataDictionary();
+    @Query(" from SysDataDictionary d where d.parentMenu.id is null and d.isDelete=0 and d.status=1 order by d.orderBy ")
+    List<SysDataDictionary> findParentDataDictionary();
 
-    @Query(" from SysDataDictionary d where d.parentObj.id=?1 and d.getDelete=0 and d.status=1 order by d.orderBy ")
-    public List<SysDataDictionary> findByParentId(Integer parentId);
+    @Query(" from SysDataDictionary d where d.parentMenu.id=?1 and d.isDelete=0 and d.status=1 order by d.orderBy ")
+    List<SysDataDictionary> findByParentId(Integer parentId);
 
 
-    @Query(" from SysDataDictionary d where  d.dataCode=?1 and d.depth=?2 and d.getDelete=0 and d.status=1 order by d.orderBy ")
-    public List<SysDataDictionary> findDataDictionaryByCode(String dataCode, Integer depth);
+    @Query(" from SysDataDictionary d where  d.dataCode=?1 and d.depth=?2 and d.isDelete=0 and d.status=1 order by d.orderBy ")
+    List<SysDataDictionary> findDataDictionaryByCode(String dataCode, Integer depth);
 
-    @Query(" from SysDataDictionary d where  d.dataCode=?1 and d.depth=?2 and d.id<>?3 and d.getDelete=0 and d.status=1 order by d.orderBy ")
-    public List<SysDataDictionary> findDataDictionaryByCode(String dataCode, Integer depth, Integer id);
+    @Query(" from SysDataDictionary d where  d.dataCode=?1 and d.depth=?2 and d.id<>?3 and d.isDelete=0 and d.status=1 order by d.orderBy ")
+    List<SysDataDictionary> findDataDictionaryByCode(String dataCode, Integer depth, Integer id);
 
-    @Query(" from SysDataDictionary d where  d.dataCode=?1 and d.name=?2  and d.depth=?3  and d.getDelete=0 and d.status=1 order by d.orderBy ")
-    public List<SysDataDictionary> findDataDictionaryByCodeAndName(String dataCode, String name, Integer depth);
+    @Query(" from SysDataDictionary d where  d.dataCode=?1 and d.name=?2  and d.depth=?3  and d.isDelete=0 and d.status=1 order by d.orderBy ")
+    List<SysDataDictionary> findDataDictionaryByCodeAndName(String dataCode, String name, Integer depth);
 
-    @Query(" from SysDataDictionary d where  d.dataCode=?1 and d.name=?2  and d.depth=?3  and id<>?4 and d.getDelete=0 and d.status=1 order by d.orderBy ")
-    public List<SysDataDictionary> findDataDictionaryByCodeAndName(String dataCode, String name, Integer depth, Integer id);
+    @Query(" from SysDataDictionary d where  d.dataCode=?1 and d.name=?2  and d.depth=?3  and id<>?4 and d.isDelete=0 and d.status=1 order by d.orderBy ")
+    List<SysDataDictionary> findDataDictionaryByCodeAndName(String dataCode, String name, Integer depth, Integer id);
 
-    @Query(" from SysDataDictionary d where  d.code=?1 and d.getDelete=0 and d.status=1 order by d.orderBy ")
-    public List<SysDataDictionary> findByCode(String code);
+    @Query(" from SysDataDictionary d where  d.code=?1 and d.isDelete=0 and d.status=1 order by d.orderBy ")
+    List<SysDataDictionary> findByCode(String code);
 
 }

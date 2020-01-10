@@ -39,7 +39,7 @@ public class SysMenuServiceImpl implements SysMenuService {
     public Integer addSysMenu(SysMenuModel model) {
         SysMenu sysMenu = new SysMenu();
         ParamUtil.bindBean(sysMenu, model);
-        sysMenu.setParentObj(new SysMenu(model.getParentId()));
+        sysMenu.setParentMenu(new SysMenu(model.getParentId()));
         sysMenuDao.save(sysMenu);
         return sysMenu.getId();
     }
@@ -48,7 +48,7 @@ public class SysMenuServiceImpl implements SysMenuService {
     public Integer updateSysMenu(Integer id, SysMenuModel model) {
         SysMenu sysMenu = sysMenuDao.findOne(id);
         ParamUtil.bindBean(sysMenu, model);
-        sysMenu.setParentObj(new SysMenu(model.getParentId()));
+        sysMenu.setParentMenu(new SysMenu(model.getParentId()));
         sysMenuDao.save(sysMenu);
         return sysMenu.getId();
     }

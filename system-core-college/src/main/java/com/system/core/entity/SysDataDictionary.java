@@ -47,10 +47,10 @@ public class SysDataDictionary implements Serializable {
     @JoinColumn(name = "PARENT_ID")
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonSerialize(using = SysDataDictionarySerialize.class)
-    private SysDataDictionary parentObj;
+    private SysDataDictionary parentMenu;
 
     @Column(name = "PARENT_ID")
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentObj", cascade = {javax.persistence.CascadeType.ALL})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentMenu", cascade = {javax.persistence.CascadeType.ALL})
     @JsonIgnore
     private Set<SysDataDictionary> childSet;
 

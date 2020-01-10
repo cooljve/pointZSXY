@@ -21,9 +21,9 @@ public class SysDataDictionaryController extends BaseController {
     public void bindBean(DataDictionaryModel model, SysDataDictionary entity) {
         ParamUtil.bindBean(entity, model);
         if (model.getParentObjId() != null) {
-            entity.setParentObj(new SysDataDictionary(model.getParentObjId()));
+            entity.setParentMenu(new SysDataDictionary(model.getParentObjId()));
         } else {
-            entity.setParentObj(null);
+            entity.setParentMenu(null);
         }
     }
 
@@ -38,7 +38,7 @@ public class SysDataDictionaryController extends BaseController {
     public String add(@ModelAttribute DataDictionaryModel model, HttpServletRequest request) {
         SysDataDictionary bean = new SysDataDictionary();
         bindBean(model, bean);
-        if (bean.getParentObj() != null) {
+        if (bean.getParentMenu() != null) {
             if (null != dataDictionaryService.findByCodeAndName(model.getDataCode(), model.getName(), model.getDepth(), null)) {
                 return super.message("", "数据字典名称重复!", "error");
             }
@@ -58,7 +58,7 @@ public class SysDataDictionaryController extends BaseController {
                 bean1.setName(s);
                 bean1.setOrderBy(1);
                 bean1.setStatus(1);
-                bean1.setParentObj(bean.getParentObj());
+                bean1.setParentMenu(bean.getParentMenu());
                 this.dataDictionaryService.add(bean1);
             }
         }
@@ -89,7 +89,7 @@ public class SysDataDictionaryController extends BaseController {
     public String update(@PathVariable Integer id, @ModelAttribute DataDictionaryModel model, HttpServletRequest request) {
         SysDataDictionary bean = this.dataDictionaryService.get(id);
         bindBean(model, bean);
-        if (bean.getParentObj() != null) {
+        if (bean.getParentMenu() != null) {
             if (null != dataDictionaryService.findByCodeAndName(model.getDataCode(), model.getName(), model.getDepth(), id)) {
                 return super.message("", "数据字典名称重复!", "error");
             }

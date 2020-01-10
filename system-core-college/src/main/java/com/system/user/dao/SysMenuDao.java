@@ -8,11 +8,11 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface SysMenuDao extends CrudRepository<SysMenu, Integer>, JpaSpecificationExecutor<SysMenu> {
-    @Query("from SysMenu order by parentObj.id,orderBy,id")
-    public List<SysMenu> findAll();
+    @Query("from SysMenu order by parentMenu.id,orderBy,id")
+    List<SysMenu> findAll();
 
-    @Query("from SysMenu where parentObj.id=?1")
-    public List<SysMenu> findByParentId(Integer menuId);
+    @Query("from SysMenu where parentMenu.id=?1")
+    List<SysMenu> findByParentId(Integer menuId);
 
 	/*@Query("delete from SysMenu where parentObj.id=?1")
 	public void delByParId(Integer menuId);*/

@@ -35,19 +35,7 @@ public class LoginServiceImpl implements LoginService {
         if (!code.equals(randomCode)) {
             return new MessageVO(RANDOM_CODE_ERROR, 1);
         } else {
-            SysUser sysUser = sysUserDao.findSysUserByUsername(username);
-            if (sysUser == null) {
-                return new MessageVO(USER_NOT_EXIST, 2);
-            } else {
-                if (!isPwdCorrect(inputPwd, sysUser.getPassword())) {
-                    return new MessageVO(PWD_ERROR, 3);
-                } else if (sysUser.getStatus() == 1) {
-                    return new MessageVO(USER_IS_DISABLED, 4);
-                } else {
-                    session.setAttribute(SESSION_ATTR_USER_ID, sysUser.getId());
-                    return new MessageVO(VERIFY_SUCCESS, 0);
-                }
-            }
+            return handleUserLogin(username, inputPwd, session);
         }
     }
 
@@ -70,5 +58,21 @@ public class LoginServiceImpl implements LoginService {
         String hql = "from SysMenu where id in (select  sysMenuId from SysRoleMenu where sysRoleId in (select roleId from SysUserRole where userId=?1 ))";
         hql += " order by orderBy asc";
         return baseRepository.find(hql, new Object[]{userId}, -1, -1);
+    }
+
+    private MessageVO handleUserLogin(String username, String inputPwd, HttpSession session) {
+        SysUser sysUser = sysUserDao.findSysUserByUsername(username);
+        if (sysUser == null) {
+            return new MessageVO(USER_NOT_EXIST, 2);
+        } else {
+            if (!isPwdCorrect(inputPwd, sysUser.getPassword())) {
+                return new MessageVO(PWD_ERROR, 3);
+            } else if (sysUser.getStatus() == 1) {
+                return new MessageVO(USER_IS_DISABLED, 4);
+            } else {
+                session.setAttribute(SESSION_ATTR_USER_ID, sysUser.getId());
+                return new MessageVO(VERIFY_SUCCESS, 0);
+            }
+        }
     }
 }
