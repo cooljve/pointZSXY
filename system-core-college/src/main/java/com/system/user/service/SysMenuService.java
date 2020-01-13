@@ -11,7 +11,7 @@ public interface SysMenuService {
      *
      * @return
      */
-    public List<SysMenu> findListMenu();
+    List<SysMenu> findMenuList();
 
     /**
      * 查询一个
@@ -19,28 +19,28 @@ public interface SysMenuService {
      * @param id
      * @return
      */
-    public SysMenu getMenu(Integer id);
+    SysMenu getMenu(Integer id);
 
     /**
      * 添加
      *
      * @param model
      */
-    public Integer addSysMenu(SysMenuModel model);
+    Integer addSysMenu(SysMenuModel model);
 
     /**
      * 更新
      *
      * @param model
      */
-    public Integer updateSysMenu(Integer id, SysMenuModel model);
+    Integer updateSysMenu(Integer id, SysMenuModel model);
 
     /**
      * 删除菜单
      *
      * @param ids
      */
-    public void delSysMenu(String ids);
+    void delSysMenu(String ids);
 
 }
 

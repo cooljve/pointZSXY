@@ -8,12 +8,15 @@ import com.system.user.service.SysMenuService;
 import com.system.user.web.model.SysMenuModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.List;
 
-@Service("sysMenuService")
+import static com.system.core.util.Constant.COMMA;
+
+@Service
 public class SysMenuServiceImpl implements SysMenuService {
 
     @Autowired
@@ -26,7 +29,7 @@ public class SysMenuServiceImpl implements SysMenuService {
      *
      * @return
      */
-    public List<SysMenu> findListMenu() {
+    public List<SysMenu> findMenuList() {
         return sysMenuDao.findAll();
     }
 
@@ -57,18 +60,23 @@ public class SysMenuServiceImpl implements SysMenuService {
     @Transactional
     public void delSysMenu(String ids) {
         if (!StringUtils.isEmpty(ids)) {
-            Integer[] ides = ParamUtil.toIntegers(ids.split(","));
-            for (Integer integer : ides) {
-                List<SysMenu> listSysMenu = sysMenuDao.findByParentId(integer);//查出所有的子结构
-                if (listSysMenu != null && listSysMenu.size() > 0) {
-                    for (SysMenu sysMenu : listSysMenu) {
-                        sysRoleMenuDao.delByMenuId(sysMenu.getId());//删除中间表
-                        sysMenuDao.delete(sysMenu.getId());
-                    }
-                }
-                sysRoleMenuDao.delByMenuId(integer);
-                sysMenuDao.delete(integer);
-            }
+            Integer[] ides = ParamUtil.toIntegers(ids.split(COMMA));
+            Arrays.stream(ides).forEach(menuId -> {
+                deleteChildMenu(menuId);
+                deleteRelatedMenu(menuId);
+            });
         }
+    }
+
+    private void deleteChildMenu(Integer menuId) {
+        List<SysMenu> childMenus = sysMenuDao.findByParentId(menuId);
+        if (childMenus != null && !childMenus.isEmpty()) {
+            childMenus.forEach(x -> deleteRelatedMenu(x.getId()));
+        }
+    }
+
+    private void deleteRelatedMenu(Integer id) {
+        sysRoleMenuDao.delByMenuId(id);
+        sysMenuDao.delete(id);
     }
 }

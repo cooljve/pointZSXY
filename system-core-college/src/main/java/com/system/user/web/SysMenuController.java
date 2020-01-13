@@ -31,7 +31,7 @@ public class SysMenuController extends BaseController {
      */
     @RequestMapping(value = "/sysMenus", method = {RequestMethod.GET, RequestMethod.POST})
     public List<SysMenu> findAll(HttpServletRequest request, HttpServletResponse response) {
-        return sysMenuService.findListMenu();
+        return sysMenuService.findMenuList();
     }
 
     @RequestMapping(value = "/addSysMenu", method = {RequestMethod.POST})
