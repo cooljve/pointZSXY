@@ -1,11 +1,11 @@
 package com.system.core.util;
 
+import org.exparity.hamcrest.date.DateMatchers;
 import org.junit.Test;
 
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 public class CustomDateUtilTest {
 
@@ -42,6 +42,14 @@ public class CustomDateUtilTest {
         String result = CustomDateUtil.getNowDateAsNumber();
         System.out.println(result);
         assertEquals(8, result.length());
+    }
+
+    @Test
+    public void getNextDay(){
+        Date now = new Date();
+        Date nextDay = CustomDateUtil.getNextDay(now);
+
+        assertThat(nextDay, DateMatchers.isTomorrow());
     }
 
 }

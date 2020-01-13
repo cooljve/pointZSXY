@@ -68,10 +68,10 @@ public class SysUser implements Serializable {
     private String remark2;
     //状态 0启用，1禁用
     @Column(name = "STATUS", columnDefinition = "int default 0")
-    private Integer status;
+    private Integer status = 0;
     //是否删除0正常，1删除
     @Column(name = "ISDELETE", columnDefinition = "int default 0")
-    private Integer isDelete;
+    private Integer isDelete = 0;
 
     public SysUser(Integer id) {
         super();

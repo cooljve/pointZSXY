@@ -11,7 +11,7 @@ public interface SysUserService {
      *
      * @return
      */
-    public Page<SysUser> pageList(SysUserModel model, Pageable pageable);
+    Page<SysUser> pageList(SysUserModel model, Pageable pageable);
 
     /**
      * 查询详情
@@ -19,7 +19,7 @@ public interface SysUserService {
      * @param id
      * @return
      */
-    public SysUser getSysUserById(Integer id);
+    SysUser getSysUserById(Integer id);
 
     /**
      * 根据用户名查询
@@ -27,56 +27,59 @@ public interface SysUserService {
      * @param userName
      * @return
      */
-    public SysUser getSysUserByUsername(String userName, Integer id);
+    SysUser getSysUserByUsername(String userName, Integer id);
 
     /**
      * 添加
      *
      * @param model
      */
-    public Integer addSysUser(SysUserModel model);
+    Integer addSysUser(SysUserModel model);
 
     /**
      * 更新
      *
      * @param model
      */
-    public void updateSysUser(Integer id, SysUserModel model);
+    void updateSysUser(Integer id, SysUserModel model);
+
 
     /**
-     * 更新
-     *
-     * @param model
+     * @param id
+     * @param nickname
+     * @param position
+     * @param detail
+     * @param sex
      */
-    public void updateSysUserPhone(Integer id, String nickname, String zhiwei, String jiesao, Integer sex);
+    void updateSysUserPhone(Integer id, String nickname, String position, String detail, Integer sex);
 
     /**
      * 更新vip
      *
      * @param model
      */
-    public void updateSysUserVip(Integer id, SysUser model);
+    void updateSysUserVip(Integer id, SysUser model);
 
     /**
      * 删除明星
      *
      * @param ids
      */
-    public void delSysUser(String ids);
+    void delSysUser(String ids);
 
     /**
      * 更新状态
      *
      * @param ids
      */
-    public void upSysUserStatus(Integer status, String ids);
+    void updateSysUserStatus(Integer status, String ids);
 
     /**
      * 更改密码
      *
      * @param ids
      */
-    public void upSysUserPass(String password, String ids);
+    void updateSysUserPassword(String password, String ids);
 
     /**
      * 根据token查询用户
@@ -84,5 +87,5 @@ public interface SysUserService {
      * @param access_token
      * @return
      */
-    public SysUser findSysUserByToken(String access_token);
+    SysUser findSysUserByToken(String access_token);
 }

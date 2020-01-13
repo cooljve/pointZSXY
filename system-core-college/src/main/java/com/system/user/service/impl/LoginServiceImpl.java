@@ -47,7 +47,7 @@ public class LoginServiceImpl implements LoginService {
         if (!isPwdCorrect(inputPwd, sysUser.getPassword())) {
             return new MessageVO(OLD_PWD_ERROR, 1);
         } else {
-            sysUserDao.updateSysUserPass(DigestMD5Util.MD5(newPwd), new Integer[]{sysUser.getId()});
+            sysUserDao.updateSysUserPassword(DigestMD5Util.MD5(newPwd), new Integer[]{sysUser.getId()});
             sysUser.setPassword(DigestMD5Util.MD5(newPwd));
             session.setAttribute("sys_user", sysUser);
             return new MessageVO(UPDATE_SUCCESS, 0);

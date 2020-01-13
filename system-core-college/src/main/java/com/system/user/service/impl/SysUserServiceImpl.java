@@ -19,13 +19,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+
+import static com.system.core.util.Constant.COMMA;
+import static com.system.core.util.Constant.YYYY_MM_DD_HH_MM_SS;
+import static com.system.core.util.CustomDateUtil.getNextDay;
 
 @Service("sysUserService")
 public class SysUserServiceImpl implements SysUserService {
@@ -56,15 +59,15 @@ public class SysUserServiceImpl implements SysUserService {
     public Specification<SysUser> getSpecification(final SysUserModel model) {
         return new Specification<SysUser>() {
             @Override
-            public Predicate toPredicate(Root<SysUser> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+            public Predicate toPredicate(Root<SysUser> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
                 List<Expression<Boolean>> andPredicates = new ArrayList<Expression<Boolean>>();
                 Predicate namePredicate = null;
 
-                namePredicate = cb.and(cb.equal(root.<Integer>get("isdelete"), 0));
+                namePredicate = criteriaBuilder.and(criteriaBuilder.equal(root.<Integer>get("isdelete"), 0));
                 andPredicates.add(namePredicate);
 
                 if (!StringUtils.isEmpty(model.getUsername())) {
-                    namePredicate = cb.and(cb.like(root.<String>get("username"), "%" + model.getUsername() + "%"));
+                    namePredicate = criteriaBuilder.and(criteriaBuilder.like(root.get("username"), "%" + model.getUsername() + "%"));
                     andPredicates.add(namePredicate);
                 }
 //				if(!ParamUtil.isEmpty(model.getTruename())){
@@ -72,18 +75,18 @@ public class SysUserServiceImpl implements SysUserService {
 //					andPredicates.add(namePredicate);
 //				}
                 if (!StringUtils.isEmpty(model.getCode())) {
-                    namePredicate = cb.and(cb.like(root.<String>get("code"), "%" + model.getCode() + "%"));
+                    namePredicate = criteriaBuilder.and(criteriaBuilder.like(root.get("code"), "%" + model.getCode() + "%"));
                     andPredicates.add(namePredicate);
                 }
                 if (model.getStatus() != null && model.getStatus() != -1) {
-                    namePredicate = cb.and(cb.equal(root.<Integer>get("status"), model.getStatus()));
+                    namePredicate = criteriaBuilder.and(criteriaBuilder.equal(root.<Integer>get("status"), model.getStatus()));
                     andPredicates.add(namePredicate);
                 }
 
                 if (andPredicates.isEmpty()) {
                     return null;
                 } else {
-                    Predicate predicate = cb.conjunction();
+                    Predicate predicate = criteriaBuilder.conjunction();
                     predicate.getExpressions().addAll(andPredicates);
                     return predicate;
                 }
@@ -94,16 +97,11 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public SysUser getSysUserById(Integer id) {
-        SysUser sysUser = sysUserDao.findOne(id);
-        return sysUser;
+        return sysUserDao.findOne(id);
     }
 
     public SysUser getSysUserByUsername(String userName, Integer id) {
-        if (id == null) {
-            return sysUserDao.findSysUserByUsername(userName);
-        } else {
-            return sysUserDao.findSysUserByUsername(userName, id);
-        }
+        return id == null ? sysUserDao.findSysUserByUsername(userName) : sysUserDao.findSysUserByUsername(userName, id);
     }
 
     @Override
@@ -112,26 +110,19 @@ public class SysUserServiceImpl implements SysUserService {
         SysUser sysUser = new SysUser();
         model.setPassword(DigestMD5Util.MD5(model.getPassword()));
         ParamUtil.bindBean(sysUser, model);
-        sysUser.setIsDelete(0);
-        //账号
         sysUser.setAccount(System.currentTimeMillis() + "");
-        //添加时间
-        sysUser.setCreateDate(CustomDateUtil.getNowTime("yyyy-MM-dd HH:mm:ss"));
+        sysUser.setCreateDate(CustomDateUtil.getNowTime(YYYY_MM_DD_HH_MM_SS));
         sysUserDao.save(sysUser);
-        if (null != model.getRoleId() && -1 != model.getRoleId()) {
-            addUserRoles(model.getRoleId(), sysUser.getId(), false);
-        }
+        updateUserRole(sysUser, model.getRoleId(), false);
         return sysUser.getId();
     }
 
     @Transactional
-    void addUserRoles(Integer roleId, Integer userid, boolean flag) {
-        if (flag) {
-            sysUserRoleDao.delByUserId(userid);
+    void addUserRole(Integer roleId, Integer userId, boolean deleteUserRole) {
+        if (deleteUserRole) {
+            sysUserRoleDao.delByUserId(userId);
         }
-        SysUserRole sysUserRole = new SysUserRole();
-        sysUserRole.setUserId(userid);
-        sysUserRole.setRoleId(roleId);
+        SysUserRole sysUserRole = new SysUserRole(userId, roleId);
         sysUserRoleDao.save(sysUserRole);
     }
 
@@ -141,41 +132,28 @@ public class SysUserServiceImpl implements SysUserService {
         SysUser sysUser = sysUserDao.findOne(id);
         if (sysUser != null) {
             ParamUtil.bindBean(sysUser, model);
-            sysUser.setModifyDate(CustomDateUtil.getNowTime("yyyy-MM-dd HH:mm:ss"));
-
+            sysUser.setModifyDate(CustomDateUtil.getNowTime(YYYY_MM_DD_HH_MM_SS));
             sysUserDao.save(sysUser);
-            if (null != model.getRoleId() && -1 != model.getRoleId()) {
-                addUserRoles(model.getRoleId(), sysUser.getId(), true);
-            }
+            updateUserRole(sysUser, model.getRoleId(), true);
         }
     }
 
     //手机端更新用户信息
     @Override
     @Transactional
-    public void updateSysUserPhone(Integer id, String nickname, String zhiwei, String jiesao, Integer sex) {
+    public void updateSysUserPhone(Integer id, String nickname, String position, String detail, Integer sex) {
         SysUser sysUser = sysUserDao.findOne(id);
         if (sysUser != null) {
-            sysUser.setModifyDate(CustomDateUtil.getNowTime("yyyy-MM-dd HH:mm:ss"));
-            //昵称
-            if (null == nickname || nickname.equals("")) {
-                sysUser.setNickname(sysUser.getNickname());
-            } else {
+            sysUser.setModifyDate(CustomDateUtil.getNowTime(YYYY_MM_DD_HH_MM_SS));
+            if (!StringUtils.isEmpty(nickname)) {
                 sysUser.setNickname(nickname);
             }
-            //职位
-            if (null == zhiwei || zhiwei.equals("")) {
-                sysUser.setPosition(sysUser.getPosition());
-            } else {
-                sysUser.setPosition(zhiwei);
+            if (!StringUtils.isEmpty(position)) {
+                sysUser.setPosition(position);
             }
-            //介绍
-            if (null == jiesao || jiesao.equals("")) {
-                sysUser.setDetail(sysUser.getDetail());
-            } else {
-                sysUser.setDetail(jiesao);
+            if (!StringUtils.isEmpty(detail)) {
+                sysUser.setDetail(detail);
             }
-
             sysUserDao.save(sysUser);
         }
     }
@@ -187,55 +165,47 @@ public class SysUserServiceImpl implements SysUserService {
         SysUser sysUser = sysUserDao.findOne(id);
         if (sysUser != null) {
             ParamUtil.bindBean(sysUser, model);
-            sysUser.setRemark2(getNextDay(CustomDateUtil.getNowTime("yyyy-MM-dd HH:mm:ss")).toString());
-
+            sysUser.setRemark2(getNextDay(CustomDateUtil.getNowTime(YYYY_MM_DD_HH_MM_SS)).toString());
             sysUserDao.save(sysUser);
-            if (null != model.getRoleId() && -1 != model.getRoleId()) {
-                addUserRoles(model.getRoleId(), sysUser.getId(), true);
-            }
+            updateUserRole(sysUser, model.getRoleId(), true);
         }
-    }
-
-    public static Date getNextDay(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.DAY_OF_MONTH, -1);
-        date = calendar.getTime();
-        return date;
     }
 
     @Override
     @Transactional
     public void delSysUser(String ids) {
-        Integer[] ides = ParamUtil.toIntegers(ids.split(","));
-        for (Integer integer : ides) {
-            sysUserRoleDao.delByUserId(integer);//删除用户角色中间表
-        }
-        sysUserDao.deleteSysUser(ides);
+        Integer[] userIDs = ParamUtil.toIntegers(ids.split(COMMA));
+        sysUserRoleDao.delByUserIds(userIDs);
+        sysUserDao.deleteSysUser(userIDs);
     }
 
     @Override
     @Transactional
-    public void upSysUserStatus(Integer status, String ids) {
-        Integer[] ides = ParamUtil.toIntegers(ids.split(","));
+    public void updateSysUserStatus(Integer status, String ids) {
+        Integer[] ides = ParamUtil.toIntegers(ids.split(COMMA));
         sysUserDao.updateSysUserStatus(status, ides);
     }
 
     @Override
     @Transactional
-    public void upSysUserPass(String password, String ids) {
-        Integer[] ides = ParamUtil.toIntegers(ids.split(","));
+    public void updateSysUserPassword(String password, String ids) {
+        Integer[] ides = ParamUtil.toIntegers(ids.split(COMMA));
         password = DigestMD5Util.MD5(password);
-        sysUserDao.updateSysUserPass(password, ides);
+        sysUserDao.updateSysUserPassword(password, ides);
     }
 
     @Override
-    public SysUser findSysUserByToken(String access_token) {
-        List<AccessToken> list = accessTokenDao.findAccessTokenByToken(access_token);
-        if (null != list && list.size() > 0) {
-            SysUser customer = sysUserDao.findOne(list.get(0).getCusId());
-            return customer;
+    public SysUser findSysUserByToken(String accessToken) {
+        List<AccessToken> list = accessTokenDao.findAccessTokenByToken(accessToken);
+        if (ObjectUtils.isEmpty(list)) {
+            return null;
         }
-        return null;
+        return sysUserDao.findOne(list.get(0).getUserId());
+    }
+
+    private void updateUserRole(SysUser sysUser, Integer roleId, boolean b) {
+        if (null != roleId && -1 != roleId) {
+            addUserRole(roleId, sysUser.getId(), b);
+        }
     }
 }

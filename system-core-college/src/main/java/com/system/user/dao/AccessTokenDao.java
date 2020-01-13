@@ -9,10 +9,10 @@ import java.util.List;
 
 public interface AccessTokenDao extends CrudRepository<AccessToken, Integer>, JpaSpecificationExecutor<AccessToken> {
 
-    @Query("from AccessToken where  cusId=?1 ")
-    public List<AccessToken> findAccessTokenByCusId(Integer cusId);
+    @Query("from AccessToken where  getUserId=?1 ")
+    List<AccessToken> findAccessTokenByCusId(Integer cusId);
 
     @Query("from AccessToken where  accessToken=?1 ")
-    public List<AccessToken> findAccessTokenByToken(String access_token);
+    List<AccessToken> findAccessTokenByToken(String access_token);
 
 }

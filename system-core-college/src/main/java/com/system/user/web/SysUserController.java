@@ -93,7 +93,7 @@ public class SysUserController extends BaseController {
 
     @RequestMapping(value = "/upSysUserStatus", method = {RequestMethod.POST})
     public String upSysUserStatus(@RequestParam() Integer status, @RequestParam() String ids, HttpServletRequest request) {
-        sysUserService.upSysUserStatus(status, ids);
+        sysUserService.updateSysUserStatus(status, ids);
         return super.message(ids, "操作成功", "success");
     }
 
@@ -102,7 +102,7 @@ public class SysUserController extends BaseController {
      */
     @RequestMapping(value = "/upSysUserPass", method = {RequestMethod.POST})
     public String upSysUserPass(@RequestParam() String password, @RequestParam() String ids, HttpServletRequest request) {
-        sysUserService.upSysUserPass(password, ids);
+        sysUserService.updateSysUserPassword(password, ids);
         return super.message(ids, "操作成功", "success");
     }
 }

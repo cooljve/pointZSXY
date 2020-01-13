@@ -33,7 +33,7 @@ public class AccessToken implements Serializable {
      * 用户的id
      **/
     @Column(name = "CUS_ID")
-    private Integer cusId;
+    private Integer userId;
     /**
      * 当前时间毫秒数
      **/
