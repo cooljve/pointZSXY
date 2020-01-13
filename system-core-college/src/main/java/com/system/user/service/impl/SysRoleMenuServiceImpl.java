@@ -11,31 +11,37 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+import static com.system.core.util.Constant.COMMA;
+
 @Service
 public class SysRoleMenuServiceImpl implements SysRoleMenuService {
     @Autowired
-    private SysRoleMenuDao sysRoleMenuDao;//角色菜单中间表
+    private SysRoleMenuDao sysRoleMenuDao;
 
     /**
      * 插入角色菜单中间表
      *
      * @param roleId
-     * @param menusId
+     * @param menuIdStr
      */
     @Transactional
     @Override
-    public void insertSysRoleMenu(Integer roleId, String menusId) {
-        sysRoleMenuDao.delByRoleId(roleId);//删除
-        if (!StringUtils.isEmpty(menusId)) {
-            Integer[] mensId = ParamUtil.toIntegers(menusId.split(","));//转换为int数组
-            SysRoleMenu bean = null;
-            for (Integer integer : mensId) {
-                bean = new SysRoleMenu();
-                bean.setSysRoleId(roleId);
-                bean.setSysMenuId(integer);
-                sysRoleMenuDao.save(bean);
+    public void insertSysRoleMenu(Integer roleId, String menuIdStr) {
+        sysRoleMenuDao.delByRoleId(roleId);
+        if (!StringUtils.isEmpty(menuIdStr)) {
+            Integer[] menuIdInt = ParamUtil.toIntegers(menuIdStr.split(COMMA));
+            for (Integer id : menuIdInt) {
+                SysRoleMenu sysRoleMenu = generateSysRoleMenu(roleId, id);
+                sysRoleMenuDao.save(sysRoleMenu);
             }
         }
+    }
+
+    private SysRoleMenu generateSysRoleMenu(Integer roleId, Integer id) {
+        SysRoleMenu sysRoleMenu = new SysRoleMenu();
+        sysRoleMenu.setSysRoleId(roleId);
+        sysRoleMenu.setSysMenuId(id);
+        return sysRoleMenu;
     }
 
     /**

@@ -40,7 +40,7 @@ public class SysRoleController extends BaseController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/findMenuByRoles/{roleid}", method = {RequestMethod.GET})
+    @RequestMapping(value = "/findMenuByRoles/{roleId}", method = {RequestMethod.GET})
     public List<SysRoleMenu> findMenuByRoles(@PathVariable Integer roleid, HttpServletRequest request, HttpServletResponse response) {
         return roleMenuService.listMenuByRoleId(roleid);
     }
@@ -48,15 +48,15 @@ public class SysRoleController extends BaseController {
     /**
      * 插入角色菜单中间表
      *
-     * @param roleid
+     * @param roleId
      * @param menusId
      * @param request
      * @param response
      * @return
      */
-    @RequestMapping(value = "/insertSysRoleMenu/{roleid}", method = {RequestMethod.POST})
-    public String findMenuByRoles(@PathVariable Integer roleid, @RequestParam String menusId, HttpServletRequest request, HttpServletResponse response) {
-        roleMenuService.insertSysRoleMenu(roleid, menusId);
+    @RequestMapping(value = "/insertSysRoleMenu/{roleId}", method = {RequestMethod.POST})
+    public String findMenuByRoles(@PathVariable Integer roleId, @RequestParam String menusId, HttpServletRequest request, HttpServletResponse response) {
+        roleMenuService.insertSysRoleMenu(roleId, menusId);
         return super.message("", "操作成功", "success");
     }
 

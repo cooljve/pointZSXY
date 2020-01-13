@@ -16,13 +16,13 @@ import java.util.List;
 public interface SysRoleMenuDao extends CrudRepository<SysRoleMenu, Integer>, JpaSpecificationExecutor<SysRoleMenu> {
 
     @Query("from SysRoleMenu where sysRoleId=?1")
-    public List<SysRoleMenu> findByRoleId(Integer roleid);
+    List<SysRoleMenu> findByRoleId(Integer roleId);
 
     @Modifying
     @Query("delete from SysRoleMenu where sysRoleId=?1")
-    public void delByRoleId(Integer roleid);
+    void delByRoleId(Integer roleId);
 
     @Modifying
     @Query("delete from SysRoleMenu where sysMenuId=?1")
-    public void delByMenuId(Integer menuId);
+    void delByMenuId(Integer menuId);
 }
