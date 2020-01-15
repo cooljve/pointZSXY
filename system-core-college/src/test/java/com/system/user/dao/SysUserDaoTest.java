@@ -30,12 +30,18 @@ public class SysUserDaoTest {
 
     @Test
     public void updateSysUserStatus() {
+        sysUserDao.updateSysUserStatus(1,new Integer[]{50,51,52});
+        SysUser sysUser = sysUserDao.findOne(52);
 
+        assertEquals(1,sysUser.getStatus());
     }
 
     @Test
     public void updateSysUserPassword() {
+        sysUserDao.updateSysUserPassword("1",new Integer[]{50,51,52});
+        SysUser sysUser = sysUserDao.findOne(52);
 
+        assertEquals("1",sysUser.getPassword());
     }
 
     @Test
